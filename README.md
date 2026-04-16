@@ -16,7 +16,6 @@ Raccolta di progetti **embedded system** realizzati durante il corso di **Embedd
 ## 🛠️ Hardware & Requisiti
 
 **Hardware:**
-- [STM32G474RE](https://www.st.com/en/microcontrollers-microprocessors/stm32g474re.html) (ARM Cortex-M4, 170 MHz)
 - [NUCLEO-G474RE board](https://www.st.com/en/evaluation-tools/nucleo-g474re.html)
 
 **Software:**
