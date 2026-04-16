@@ -1,58 +1,50 @@
 # Timer_Interrupt_Basic - Introduzione ai Timer Interrupt
 
 ## Obiettivo
+Il progetto illustra i **fondamenti dei timer interrupt** su piattaforma STM32. Un timer è un contatore hardware in grado di generare interruzioni a intervalli regolari. Rispetto all'utilizzo della funzione `HAL_Delay()`, che comporta il blocco dell'esecuzione del programma, l'uso degli interrupt permette al flusso principale (Main Loop) di procedere senza interruzioni, demandando al sistema l'esecuzione di azioni periodiche basate su eventi hardware.
 
-Questo progetto insegna i **fondamenti dei timer interrupt** su STM32. Un timer è un contatore hardware che può generare interrupt a intervalli regolari. Invece di usare `HAL_Delay()` che blocca il programma, un timer interrupt permette al main loop di continuare libero mentre il sistema esegue azioni periodiche.
+## 🎯 Funzionamento
+Il sistema prevede la configurazione del timer **TIM6** per la generazione di un interrupt con cadenza periodica (es. ogni millisecondo). Al verificarsi dell'evento di overflow del timer, il microcontrollore esegue automaticamente una funzione di callback, garantendo un'operatività non bloccante.
 
-## 🎯 Cosa Fa
+### Specifiche Tecniche
+- **Periferica:** TIM6 (timer di base a 16-bit).
+- **Frequenza di Interrupt:** Configurazione standard a ~1 kHz (1 interrupt ogni 1 ms).
+- **Architettura:** Esecuzione asincrona tramite callback.
 
-Il progetto configura il **TIM6** per generare un interrupt ogni millisecondo (configurabile). Ogni volta che scatta l'interrupt, il microcontrollore esegue automaticamente una callback senza bloccare il main loop.
+## 🔧 Analisi Tecnica
+Il timer opera come una periferica hardware indipendente che incrementa un contatore in base al clock di sistema. Al raggiungimento del valore di soglia prestabilito, viene generata un'eccezione che induce il processore a sospendere temporaneamente il task corrente per eseguire la routine di servizio associata (ISR).
 
-### Hardware Utilizzato
-- **Timer:** TIM6 (timer base a 16-bit)
-- **Frequenza:** ~1 kHz (1 interrupt ogni 1 ms)
-- **Output:** Callback non-bloccante
+**Vantaggi dell'approccio basato su Timer:**
+- **Esecuzione Non Bloccante:** Il Main Loop rimane disponibile per l'elaborazione di altri processi.
+- **Determinismo:** Il timing è garantito dall'hardware e sincronizzato con il clock di sistema, risultando indipendente dal carico software.
+- **Efficienza:** Rappresenta il pattern standard per lo sviluppo di applicazioni real-time.
 
-## 🔧 Come Funziona
 
-Il timer è una periferica hardware che conta autonomamente. La frequenza scelta (1 kHz) significa che ogni 1 millisecondo il timer "scatta" e avvisa il processore. Il processore allora interrompe quello che sta facendo, esegue la callback (una piccola funzione), e torna al main loop.
 
-**Vantaggi rispetto a `HAL_Delay()`:**
-- Il main loop **non è bloccato** - può fare altre cose
-- Il timing è **preciso e sincronizzato al hardware**, non dipende da SysTick
-- Pattern ideale per applicazioni real-time
+## 💡 Concetti Chiave
 
-## 💡 Concetti Interessanti
+**Prescaler (PSC):** Registro utilizzato per dividere la frequenza del clock principale del microcontrollore. Permette di rallentare il conteggio del timer per ottenere risoluzioni temporali utili all'applicazione.
 
-**Prescaler:** Il clock del microcontrollore è molto veloce (16 MHz). Il prescaler lo "ralenta" a una frequenza utile. Ad esempio, un prescaler di 16 divide il clock per 16, ottenendo 1 MHz.
+**Auto-Reload Register (ARR):** Definisce il valore massimo raggiungibile dal contatore prima del reset e della generazione dell'interrupt. Determina, insieme al prescaler, il periodo dell'evento.
 
-**Periodo (ARR - Auto Reload Register):** Quante volte il timer deve contare prima di generare l'interrupt. Se il timer conta a 1 MHz e deve scattare ogni 1 ms, deve contare 1000 volte.
 
-**Callback:** È una funzione che il sistema chiama automaticamente quando scatta l'interrupt. È il posto dove mettere la logica che vuoi eseguire periodicamente (accendere un LED, leggere un sensore, etc.).
 
-## 🚀 Come Usare
+**Callback:** Funzione software invocata automaticamente dall'Hardware Abstraction Layer (HAL) al verificarsi dell'interruzione. Costituisce il punto di inserimento per la logica periodica (es. toggling di un GPIO o campionamento dati).
 
-1. Compila il progetto
-2. Flashalo su NUCLEO-G474RE
-3. Se colleghi un LED a PA5, vedrà accendersi e spegnersi periodicamente (il timer lo controlla dalla callback)
-4. Puoi modificare il periodo del timer per cambiar la frequenza
+## 🚀 Modalità di Utilizzo
+1. Configurazione della periferica tramite STM32CubeMX o codice sorgente.
+2. Compilazione e caricamento del firmware sulla scheda NUCLEO-G474RE.
+3. Verifica della periodicità tramite l'oscillazione di un pin di output (es. PA5) o tramite l'utilizzo di un oscilloscopio.
 
-## 📝 Configurazioni Principali
+### Calcolo della Frequenza
+La frequenza di generazione dell'interrupt è determinata dalla seguente formula:
+$$F_{interrupt} = \frac{Clock_{source}}{(Prescaler + 1) \cdot (Periodo + 1)}$$
 
-Puoi modificare la **frequenza del timer** cambiando due parametri nel codice di configurazione del timer:
-- **Prescaler:** Come dividi il clock principale
-- **Periodo (ARR):** Quante volte il timer conta prima di interrupt
-
-La formula è: `Frequenza_Interrupt = Clock / (Prescaler + 1) / (Periodo + 1)`
-
-## 🎓 Cosa Impari
-
-Questo è il progetto base per capire:
-- Come i timer hardware funzionano
-- Come generare interrupt periodici precisi
-- Il pattern callback (fondamentale per embedded system)
-- Perché gli interrupt sono meglio di delay bloccanti
+## 🎓 Competenze Acquisite
+- Comprensione del funzionamento dei timer hardware.
+- Generazione di interrupt periodici con alta precisione.
+- Implementazione del pattern basato su callback per sistemi embedded.
+- Analisi dei vantaggi della programmazione orientata agli eventi rispetto ai ritardi bloccanti.
 
 ---
-
-**Progetto essenziale per imparare timer interrupt!**
+**Esercitazione fondamentale per l'apprendimento della gestione temporale nei sistemi embedded.**
