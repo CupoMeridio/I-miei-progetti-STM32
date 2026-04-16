@@ -43,6 +43,3 @@ Dopo la compilazione e il caricamento del firmware sulla scheda NUCLEO-G474RE, i
 * Tecniche di filtraggio software per segnali impulsivi.
 * Utilizzo efficiente delle risorse di sistema tramite interrupt.
 * Gestione della priorità e delle routine di servizio (ISR) su architettura ARM Cortex-M4.
-
----
-**Esercitazione realizzata per il corso di Sistemi Embedded - Università degli Studi di Salerno (UNISA).**
