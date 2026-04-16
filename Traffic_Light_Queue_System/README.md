@@ -52,6 +52,3 @@ Al caricamento del firmware sulla scheda NUCLEO-G474RE, il sistema avvia il cicl
 - Utilizzo di timer hardware per la gestione di tempistiche deterministiche.
 - Integrazione di code per la comunicazione asincrona tra contesti diversi (Interrupt/Main Loop).
 - Sviluppo di architetture di controllo scalabili e robuste (production-grade).
-
----
-**Progetto avanzato che dimostra l'integrazione di logica sequenziale e gestione asincrona degli eventi.**
