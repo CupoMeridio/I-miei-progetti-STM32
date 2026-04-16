@@ -40,6 +40,3 @@ L'aggiornamento della luminosità è gestito tramite la callback di overflow del
 
 ## 🎓 Conclusioni
 L'analisi evidenzia come l'approccio **Non-Blocking** sia lo standard per applicazioni embedded professionali. Mentre il risultato visivo è comparabile, solo l'architettura basata su interrupt permette la gestione simultanea e reattiva di più periferiche, requisito fondamentale per sistemi complessi.
-
----
-**Esercitazione realizzata per il corso di Sistemi Embedded - Università degli Studi di Salerno (UNISA).**
