@@ -15,6 +15,7 @@ Release/
 .vscode/
 .idea/
 .settings/
+.metadata/
 *.swp
 *.swo
 .DS_Store
