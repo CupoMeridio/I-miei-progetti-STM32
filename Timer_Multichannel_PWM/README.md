@@ -47,6 +47,3 @@ La modifica dei valori nei registri di confronto permette di osservare variazion
 - Comprensione dei vantaggi del controllo PWM rispetto alla regolazione di tensione lineare (efficienza energetica e precisione).
 - Implementazione di logiche di controllo asincrone per attuatori multipli.
 - Gestione dei registri di configurazione in tempo reale.
-
----
-**Esercitazione fondamentale per il controllo di sistemi multi-attuatore.**
