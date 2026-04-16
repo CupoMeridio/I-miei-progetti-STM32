@@ -45,6 +45,3 @@ $$F_{interrupt} = \frac{Clock_{source}}{(Prescaler + 1) \cdot (Periodo + 1)}$$
 - Generazione di interrupt periodici con alta precisione.
 - Implementazione del pattern basato su callback per sistemi embedded.
 - Analisi dei vantaggi della programmazione orientata agli eventi rispetto ai ritardi bloccanti.
-
----
-**Esercitazione fondamentale per l'apprendimento della gestione temporale nei sistemi embedded.**
