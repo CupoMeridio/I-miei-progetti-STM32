@@ -1,54 +1,52 @@
-# Timer_Multichannel_PWM - PWM su Multipli Canali
+# Timer_Multichannel_PWM - Generazione PWM su Canali Multipli
 
 ## Obiettivo
+Il progetto illustra le modalità di controllo di **molteplici dispositivi indipendenti** utilizzando le uscite PWM (Pulse Width Modulation) generate da una singola periferica timer. L'implementazione permette di gestire diverse intensità luminose su ciascun canale, mantenendo una frequenza di commutazione comune.
 
-Questo progetto insegna come controllare **più dispositivi indipendenti** usando PWM dalla stessa periferica timer. Ogni canale può avere luminosità diversa, ma tutti hanno la stessa frequenza.
+## 🎯 Funzionamento
+Il sistema prevede la configurazione del timer **TIM2 con 4 canali PWM** per il controllo indipendente della luminosità di 4 LED. Ciascun canale opera con un Duty Cycle specifico, permettendo di impostare livelli di intensità differenziati (es. 25%, 75%, ecc.) per ogni uscita.
 
-## 🎯 Cosa Fa
+### Specifiche Hardware
+- **Periferica:** TIM2 (configurato con 4 canali di Output Compare).
+- **Output:** 4 LED collegati a pin dedicati (es. PA0-PA3).
+- **Frequenza PWM:** ~1 kHz (uniforme per tutti i canali).
+- **Duty Cycle:** Regolabile indipendentemente per ogni canale (0-100%).
 
-Il progetto configura il **TIM2 con 4 canali PWM** e controlla la luminosità di 4 LED indipendentemente. Ogni LED può essere a brightness diverso: uno può essere al 25%, un altro al 75%, etc.
+## 🔧 Analisi Tecnica
+Un timer hardware opera con una frequenza di clock e un periodo (Auto-Reload Register) definiti a livello di periferica. Tuttavia, la presenza di più registri di confronto (**Capture/Compare Registers - CCRx**) consente di modulare le singole uscite in modo autonomo.
 
-### Hardware
-- **Timer:** TIM2 (4 canali)
-- **LED:** 4 LED su pin diversi (PA0-PA3)
-- **Frequenza PWM:** ~1 kHz (uguale per tutti i canali)
-- **Duty Cycle:** Indipendente per ogni canale (0-100%)
+Il segnale viene generato confrontando il valore del contatore principale con il valore impostato nel registro del singolo canale:
+1. Il contatore incrementa fino al valore massimo stabilito.
+2. L'uscita del canale rimane nello stato logico HIGH finché il contatore è inferiore al valore di soglia del registro CCRx.
+3. Al superamento della soglia, l'uscita passa allo stato logico LOW fino al termine del periodo.
 
-## 🔧 Come Funziona
 
-Un timer ha una velocità (frequenza) e un periodo fissato. Però ha **più uscite** che puoi controllare indipendentemente. Immagina un metronomo che batte 1000 volte al secondo: 4 musicisti ascoltano lo stesso metronomo (stessa frequenza) ma suonano note diverse (duty cycle diverso).
-
-Sul microcontrollore funziona così: un timer incrementa un contatore fino a un valore massimo (es. 1000). Ogni canale può generare un'uscita HIGH quando il contatore è sotto un valore specifico. Se il contatore massimo è 1000 e il canale 1 è impostato a 250, allora sarà HIGH per i primi 250 count (25%) e LOW per gli ultimi 750 count (75%).
 
 ## 💡 Applicazioni Pratiche
+* **LED RGB:** Gestione delle tre componenti cromatiche (Rosso, Verde, Blu) tramite canali indipendenti per la sintesi dei colori.
+* **Motori in corrente continua (DC):** Controllo simultaneo e indipendente della velocità di più attuatori.
+* **Sistemi di ventilazione:** Regolazione della velocità di rotazione di più ventole con profili di raffreddamento diversificati.
 
-**LED RGB:** Usi 3 canali per controllare le componenti Rosso, Verde, Blu. Combinandoli puoi ottenere qualsiasi colore.
+## 🎓 Concetti Chiave
 
-**Motori DC:** Usi più canali per controllare la velocità di più motori indipendentemente.
+**Frequenza Comune:** Poiché i canali condividono la medesima base dei tempi del timer, la frequenza del segnale PWM è identica per tutte le uscite associate a quella specifica periferica.
 
-**Fan Speed:** Controlli la velocità di più ventole con duty cycle diversi.
+**Duty Cycle Indipendente:** È possibile variare la frazione di tempo "ON" di ciascun canale senza interferire con lo stato degli altri.
 
-## 🎓 Concetti Interessanti
+**Modifica a Runtime:** Il Duty Cycle può essere aggiornato dinamicamente durante l'esecuzione del firmware. Questa caratteristica consente al sistema di reagire istantaneamente a input esterni (es. variazioni rilevate da sensori di luminosità o temperatura).
 
-**Frequenza Comune:** Tutti i canali hanno la stessa frequenza perché condividono lo stesso timer. Non puoi averne uno a 1 kHz e uno a 2 kHz.
 
-**Duty Cycle Indipendente:** Puoi cambiare il duty cycle di ogni canale senza influenzare gli altri. Puoi anche cambiarlo "al volo" (runtime) senza fermare il timer.
 
-**Modifica Runtime:** Uno dei vantaggi di PWM è che puoi cambiare il brightness in real-time. Ad esempio, se leggi un sensore di luminosità ambientale, puoi adattare il brightness del tuo schermo istantaneamente.
+## 🚀 Modalità di Utilizzo
+Dopo la compilazione e il caricamento del firmware sulla scheda NUCLEO-G474RE, le uscite mostreranno intensità luminose predefinite. Tramite l'uso di un oscilloscopio è possibile verificare la sincronia dei fronti di salita (frequenza comune) e la differente ampiezza temporale degli impulsi (duty cycle variabile).
 
-## 🚀 Come Usare
+La modifica dei valori nei registri di confronto permette di osservare variazioni istantanee dell'intensità luminosa o della velocità dei carichi collegati.
 
-Compila il progetto. I 4 LED si accenderanno a luminosità diverse. Se colleghi un oscilloscopio, vedrai 4 segnali PWM con la stessa frequenza ma duty cycle diversi.
-
-Puoi modificare il duty cycle di ogni LED dinamicamente e vedrai il cambio di luminosità istantaneo.
-
-## 🎓 Cosa Impari
-
-- Come usare multi-canali di un timer
-- Perché PWM è meglio di controllo tensione (più efficiente, controllabile)
-- Applicazioni realistiche (LED RGB, motori, etc.)
-- Come modificare PWM in runtime
+## 🎓 Competenze Acquisite
+- Configurazione e gestione di periferiche timer multicanale.
+- Comprensione dei vantaggi del controllo PWM rispetto alla regolazione di tensione lineare (efficienza energetica e precisione).
+- Implementazione di logiche di controllo asincrone per attuatori multipli.
+- Gestione dei registri di configurazione in tempo reale.
 
 ---
-
-**Progetto essenziale per controllare più dispositivi!**
+**Esercitazione fondamentale per il controllo di sistemi multi-attuatore.**
