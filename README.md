@@ -23,7 +23,7 @@ Raccolta di progetti **embedded system** realizzati durante il corso di **Embedd
 - [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html)
 - [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html)
 - [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html)
-- [STLinkServer](https://www.st.com/en/development-tools/stlink-server.html)
+- [STLinkServer](https://www.st.com/en/development-tools/st-link-server.html)
 
 ## 📖 Documentazione Ufficiale
 
