@@ -160,7 +160,7 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.pathentry"/>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="Semaforo con coda.null.1625854516" name="Semaforo con coda"/>
+		<project id="Semaforo con coda.null.1625854516" name="Traffic_Light_Queue_System"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="scannerConfiguration">
