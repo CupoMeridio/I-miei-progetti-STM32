@@ -1,67 +1,57 @@
-# Traffic_Light_Queue_System - Semaforo Intelligente con Coda
+# Traffic_Light_Queue_System - Sistema Semaforico Intelligente con Coda
 
 ## Obiettivo
+Il progetto illustra l'integrazione di **Macchine a Stati Finiti (FSM)**, code di messaggi (Queue) e interrupt hardware per la realizzazione di un sistema di controllo realistico. L'applicazione simula un semaforo stradale automatizzato in grado di gestire transizioni temporizzate deterministiche e di processare comandi asincroni tramite buffering.
 
-Questo progetto dimostra un **sistema complete di controllo** che combina state machine, queue, e timer interrupt in un'applicazione realistica: un semaforo stradale che cambia colore automaticamente e può ricevere comandi in coda.
+## 🎯 Funzionamento
+Il sistema simula il comportamento di un semaforo tramite l'utilizzo di 3 LED (Rosso, Giallo, Verde) e segue una logica sequenziale predefinita:
 
-## 🎯 Cosa Fa
+* **Ciclo Automatico:** Transizione temporizzata tra gli stati (es. Rosso 30s → Giallo 5s → Verde 25s).
+* **Gestione Comandi:** Possibilità di accodare richieste di cambio stato tramite una coda FIFO.
+* **Architettura Non Bloccante:** Un timer interrupt gestisce il timing e le transizioni, mantenendo il Main Loop disponibile per la ricezione di input o altre attività di monitoraggio.
 
-Il progetto simula un semaforo intelligente con 3 LED (Rosso, Giallo, Verde):
-- Cambia automaticamente ogni X secondi (Rosso 30s → Giallo 5s → Verde 25s)
-- I comandi di cambio colore possono essere accodati
-- Un timer interrupt gestisce il timing deterministico
-- Il main loop rimane libero
+### Specifiche Hardware
+* **Output:** 3 LED configurati su GPIOA (Rosso, Giallo, Verde).
+* **Timer:** Periferica dedicata alla scansione dei tempi di permanenza in ogni stato.
+* **Struttura Dati:** Coda FIFO per il buffering dei comandi di override o di sequenza.
 
-### Hardware
-- **LED:** 3 LED (Rosso, Giallo, Verde) su GPIOA
-- **Timer:** Per timing automatico tra stati
-- **Queue:** Coda FIFO per buffering comandi
-- **Application:** Semaforo stradale realistico
+## 🔧 Analisi Tecnica
 
-## 🔧 Come Funziona
+### 1. Macchina a Stati Finiti (FSM)
+La logica di controllo è basata su stati discreti. Lo stato attuale determina quale periferica di output attivare. Il passaggio allo stato successivo è regolato da eventi temporali (scadenza del timer) o da eventi esterni (estrazione di un comando dalla coda).
 
-Il sistema usa una **state machine** (macchina a stati). Un semaforo ha 3 stati: Rosso, Giallo, Verde. Lo stato attuale determina quale LED è acceso. Ogni stato ha una durata fissa (es. Rosso 30 secondi). Quando la durata scade, il sistema transisce al prossimo stato.
 
-Il timer interrupt monitora il tempo trascorso. Quando la durata dello stato attuale è terminata, l'interrupt triggera la transizione al prossimo stato.
 
-La **queue** permette al sistema di ricevere comandi di cambio colore che verranno processati in sequenza. Ad esempio: "Vai a Giallo, poi Verde, poi Rosso" viene enqueued e processato sequenzialmente.
+### 2. Timing Deterministico
+A differenza dei ritardi software, il sistema utilizza un timer hardware per conteggiare la durata di ogni fase. Questo approccio garantisce che la durata degli stati sia precisa e costante, requisito fondamentale per la sincronizzazione stradale reale.
 
-## 💡 Concetti Interessanti
+### 3. Buffering Asincrono
+L'integrazione di una coda permette al sistema di ricevere istruzioni (es. "Passa a Rosso per emergenza") in modo asincrono. I comandi vengono memorizzati e processati sequenzialmente senza interferire con la stabilità temporale della ISR (Interrupt Service Routine).
 
-**State Machine:** Un sistema che ha stati discreti e transizioni deterministiche tra di essi. Un semaforo è l'esempio perfetto: hai esattamente 3 stati e le transizioni sono scritte nella logica (Rosso → Giallo → Verde → Rosso).
+## 💡 Concetti Chiave
 
-**Timing Deterministico:** Usa un timer hardware per il timing, non delay software. Questo garantisce che i tempi siano precisi e prevedibili, essenziale per sistemi reali (il semaforo deve essere sincronizzato con altri semafori sulla strada).
+**Stati e Transizioni:** Rappresentazione della logica tramite stati (es. `STATE_RED`, `STATE_GREEN`) e regole di transizione definite, che garantiscono un comportamento prevedibile del sistema.
 
-**Queue Asincrona:** I comandi arrivano indipendentemente dal timing del semaforo. La queue li bufferizza e li processa in ordine, permettendo al sistema di rimanere reattivo.
+**Sincronizzazione Hardware-Software:** Coordinamento tra il clock periferico e la logica applicativa per ottenere un'esecuzione in tempo reale.
 
-## 🎓 Applicazioni Pratiche Similari
 
-- **Controllo ascensori:** Piano attuale, coda di piani richiesti
-- **Sequenza di operazioni:** Qualsiasi processo multi-step determinato
-- **Automazione industriale:** Sequenze di azionamento
-- **Sistemi di traffico intelligente:** Sincronizzazione tra multiple semafori
 
-## 🚀 Come Usare
+**Priority Handling:** Capacità del sistema di gestire transizioni standard e comandi prioritari (come chiamate di emergenza) attraverso la manipolazione della coda o degli stati della FSM.
 
-Compila il progetto. Vedrai il LED Rosso acceso per 30 secondi, poi Giallo per 5, poi Verde per 25, poi ripete. Il ciclo è completamente automatico.
+## 🎓 Applicazioni Pratiche
+* **Sistemi di Trasporto:** Controllo di incroci intelligenti e coordinamento di flussi di traffico.
+* **Logistica:** Gestione di nastri trasportatori e sequenze di smistamento merci.
+* **Automazione Industriale:** Controllo di processi multi-fase con tempistiche rigorose (es. cicli di lavorazione meccanica).
+* **Ascensori:** Gestione delle code di prenotazione piani e transizioni tra livelli.
 
-Se aggiungi pulsanti per enqueue comandi, potrai mandare il semaforo immediatamente di Rosso (ad esempio per emergenza), mantenendo la coda di comandi.
+## 🚀 Modalità di Utilizzo
+Al caricamento del firmware sulla scheda NUCLEO-G474RE, il sistema avvia il ciclo automatico. È possibile osservare la commutazione sequenziale dei LED secondo i tempi prestabiliti. Tramite l'invio di segnali esterni (pulsanti o messaggi UART, se implementati), è possibile accodare nuovi stati e osservare la deviazione controllata dal ciclo standard verso la nuova sequenza inserita.
 
-## 🎓 Cosa Impari
-
-- State machine: come strutturare logica sequenziale
-- Timing deterministico con timer hardware
-- Queue per buffering asincrono
-- Architettura di sistemi reali (production-grade)
-- Sincronizzazione tra componenti
-
-## 💡 Estensioni Possibili
-
-- **Sensore di traffico:** Adatta la durata del verde in base al numero di auto
-- **Pulsante emergenza:** Override immediato per ambulanza
-- **Sincronizzazione:** Coordinamento con altri semafori vicini
-- **UART debug:** Log dello stato attuale su terminale
+## 🎓 Competenze Acquisite
+- Progettazione e implementazione di Macchine a Stati Finiti (FSM) in ambiente embedded.
+- Utilizzo di timer hardware per la gestione di tempistiche deterministiche.
+- Integrazione di code per la comunicazione asincrona tra contesti diversi (Interrupt/Main Loop).
+- Sviluppo di architetture di controllo scalabili e robuste (production-grade).
 
 ---
-
-**Progetto avanzato che dimostra un sistema production-ready!**
+**Progetto avanzato che dimostra l'integrazione di logica sequenziale e gestione asincrona degli eventi.**
