@@ -39,12 +39,6 @@ Il segnale viene generato confrontando il valore del contatore principale con il
 **Modifica a Runtime:** Il Duty Cycle può essere aggiornato dinamicamente durante l'esecuzione del firmware. Questa caratteristica consente al sistema di reagire istantaneamente a input esterni (es. variazioni rilevate da sensori di luminosità o temperatura).
 
 
-
-## 🚀 Modalità di Utilizzo
-Dopo la compilazione e il caricamento del firmware sulla scheda NUCLEO-G474RE, le uscite mostreranno intensità luminose predefinite. Tramite l'uso di un oscilloscopio è possibile verificare la sincronia dei fronti di salita (frequenza comune) e la differente ampiezza temporale degli impulsi (duty cycle variabile).
-
-La modifica dei valori nei registri di confronto permette di osservare variazioni istantanee dell'intensità luminosa o della velocità dei carichi collegati.
-
 ## 🎓 Competenze Acquisite
 - Configurazione e gestione di periferiche timer multicanale.
 - Comprensione dei vantaggi del controllo PWM rispetto alla regolazione di tensione lineare (efficienza energetica e precisione).
