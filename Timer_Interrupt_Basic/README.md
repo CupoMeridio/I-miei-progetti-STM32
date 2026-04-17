@@ -27,17 +27,10 @@ Il timer opera come una periferica hardware indipendente che incrementa un conta
 
 **Auto-Reload Register (ARR):** Definisce il valore massimo raggiungibile dal contatore prima del reset e della generazione dell'interrupt. Determina, insieme al prescaler, il periodo dell'evento.
 
-
-
 **Callback:** Funzione software invocata automaticamente dall'Hardware Abstraction Layer (HAL) al verificarsi dell'interruzione. Costituisce il punto di inserimento per la logica periodica (es. toggling di un GPIO o campionamento dati).
 
-## 🚀 Modalità di Utilizzo
-1. Configurazione della periferica tramite STM32CubeMX o codice sorgente.
-2. Compilazione e caricamento del firmware sulla scheda NUCLEO-G474RE.
-3. Verifica della periodicità tramite l'oscillazione di un pin di output (es. PA5) o tramite l'utilizzo di un oscilloscopio.
+**Calcolo della Frequenza**: La frequenza di generazione dell'interrupt è determinata dalla seguente formula:
 
-### Calcolo della Frequenza
-La frequenza di generazione dell'interrupt è determinata dalla seguente formula:
 $$F_{interrupt} = \frac{Clock_{source}}{(Prescaler + 1) \cdot (Periodo + 1)}$$
 
 ## 🎓 Competenze Acquisite
