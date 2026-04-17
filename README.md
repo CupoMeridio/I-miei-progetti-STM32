@@ -1,6 +1,6 @@
 # STM32G474RE Embedded System Exercises
 
-Raccolta di progetti **embedded system** realizzati durante il corso di **Embedded System** presso l'**Università degli Studi di Salerno (UNISA)**, usando la scheda **NUCLEO-G474RE**.
+Raccolta di progetti realizzati durante il corso di **Embedded System** presso l'**Università degli Studi di Salerno (UNISA)**, usando la scheda **NUCLEO-G474RE**.
 
 ## 📚 Progetti
 
