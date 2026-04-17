@@ -8,10 +8,10 @@ Il sistema prevede la configurazione di **8 ingressi GPIO** per la generazione d
 
 ### Specifiche Hardware
 * **MCU:** STM32G474RETx (NUCLEO-G474RE)
-* **Input:** 8 pulsanti attestati su GPIOB.
+* **Input:** 1 pulsante integrato (B1) su **PC13** con EXTI13.
 * **Configurazione:** EXTI (External Interrupt) su fronte di salita (RISING edge).
 * **Debouncing:** Temporizzazione software di 50 ms.
-* **Output:** Esecuzione di callback dedicate per ogni canale.
+* **Output:** LED integrato **PA5** (LD2) per feedback visivo.
 
 ## 🔧 Analisi Tecnica
 Il contatto meccanico di un pulsante è caratterizzato da transitori oscillatori (rimbalzi) della durata di alcuni millisecondi. In assenza di contromisure, una singola pressione causerebbe molteplici attivazioni spurie dell'interrupt.

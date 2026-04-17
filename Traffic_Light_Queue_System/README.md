@@ -11,7 +11,14 @@ Il sistema simula il comportamento di un semaforo tramite l'utilizzo di 3 LED (R
 * **Architettura Non Bloccante:** Un timer interrupt gestisce il timing e le transizioni, mantenendo il Main Loop disponibile per la ricezione di input o altre attività di monitoraggio.
 
 ### Specifiche Hardware
-* **Output:** 3 LED configurati su GPIOA (Rosso, Giallo, Verde).
+* **Output (LED su GPIOA):**
+  * **PA0** → Led_rosso
+  * **PA1** → Led_giallo
+  * **PA4** → Led_verde
+* **Input (Pulsanti con EXTI):**
+  * **PB3** (Button_uno) → EXTI3
+  * **PB4** (Button_due) → EXTI4
+  * **PB5** (Button_tre) → EXTI5
 * **Timer:** Periferica dedicata alla scansione dei tempi di permanenza in ogni stato.
 * **Struttura Dati:** Coda FIFO per il buffering dei comandi di override o di sequenza.
 

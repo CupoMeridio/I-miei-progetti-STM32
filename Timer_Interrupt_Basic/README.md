@@ -10,6 +10,7 @@ Il sistema prevede la configurazione del timer **TIM6** per la generazione di un
 - **Periferica:** TIM6 (timer di base a 16-bit).
 - **Frequenza di Interrupt:** Configurazione standard a ~1 kHz (1 interrupt ogni 1 ms).
 - **Architettura:** Esecuzione asincrona tramite callback.
+- **Output:** LED integrato **PA5** (LD2) per il toggling di test.
 
 ## 🔧 Analisi Tecnica
 Il timer opera come una periferica hardware indipendente che incrementa un contatore in base al clock di sistema. Al raggiungimento del valore di soglia prestabilito, viene generata un'eccezione che induce il processore a sospendere temporaneamente il task corrente per eseguire la routine di servizio associata (ISR).

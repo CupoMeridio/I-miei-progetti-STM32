@@ -7,10 +7,13 @@ Il progetto illustra le modalità di controllo di **molteplici dispositivi indip
 Il sistema prevede la configurazione del timer **TIM2 con 4 canali PWM** per il controllo indipendente della luminosità di 4 LED. Ciascun canale opera con un Duty Cycle specifico, permettendo di impostare livelli di intensità differenziati (es. 25%, 75%, ecc.) per ogni uscita.
 
 ### Specifiche Hardware
-- **Periferica:** TIM2 (configurato con 4 canali di Output Compare).
-- **Output:** 4 LED collegati a pin dedicati (es. PA0-PA3).
-- **Frequenza PWM:** ~1 kHz (uniforme per tutti i canali).
-- **Duty Cycle:** Regolabile indipendentemente per ogni canale (0-100%).
+- **Periferica:** TIM2 (configurato con 3 canali di Output Compare in modalità TOGGLE).
+- **Output:**
+  * **PA5** → TIM2_CH1 (canale 1)
+  * **PB3** → TIM2_CH2 (canale 2)
+  * **PB10** → TIM2_CH3 (canale 3)
+- **Frequenza PWM:** ~1 Hz in modalità toggle (periodo ~1 secondo).
+- **Duty Cycle (tempo ON):** Configurabile tramite registri CCR (50%, 30%, 80%).
 
 ## 🔧 Analisi Tecnica
 Un timer hardware opera con una frequenza di clock e un periodo (Auto-Reload Register) definiti a livello di periferica. Tuttavia, la presenza di più registri di confronto (**Capture/Compare Registers - CCRx**) consente di modulare le singole uscite in modo autonomo.

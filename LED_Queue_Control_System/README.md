@@ -12,9 +12,21 @@ Il firmware permette l'interazione con l'utente attraverso una serie di pulsanti
 
 ### Specifiche Hardware
 * **MCU:** STM32G474RETx (NUCLEO-G474RE).
-* **Input:** 8 pulsanti configurati con interrupt EXTI e debouncing software.
-* **Output:** 4 LED (Verde, Giallo, Rosso, Blu) su porta GPIOA.
-* **Timer:** Utilizzo di temporizzatori multipli (TIM6, TIM7, TIM16, TIM17) per la scansione della coda e la gestione dei tempi di sistema.
+* **Input (Pulsanti con EXTI):**
+  * **PB0** (Button_on) → EXTI0
+  * **PB1** (Button_red) → EXTI1
+  * **PB3** (Button_yellow) → EXTI3
+  * **PB4** (Button_speed_up) → EXTI4
+  * **PB5** (Button_off) → EXTI5
+  * **PB6** (Button_green) → EXTI6
+  * **PB9** (Button_queue_execute) → EXTI9
+  * **PB10** (Button_speed_down) → EXTI10
+* **Output (LED):**
+  * **PA0** → Led_green
+  * **PA1** → Led_yellow
+  * **PA4** → Led_red
+  * **PA7** → Led_blu
+* **Timer:** TIM6, TIM7, TIM16, TIM17 per la scansione della coda e la gestione dei tempi di sistema.
 
 ## 🔧 Architettura Software
 
