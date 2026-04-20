@@ -57,6 +57,21 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define _0_gradi_Pin GPIO_PIN_5
+#define _0_gradi_GPIO_Port GPIOA
+#define _0_gradi_EXTI_IRQn EXTI9_5_IRQn
+#define _45_gradi_Pin GPIO_PIN_6
+#define _45_gradi_GPIO_Port GPIOA
+#define _45_gradi_EXTI_IRQn EXTI9_5_IRQn
+#define _90_gradi_Pin GPIO_PIN_7
+#define _90_gradi_GPIO_Port GPIOA
+#define _90_gradi_EXTI_IRQn EXTI9_5_IRQn
+#define _135_gradi_Pin GPIO_PIN_8
+#define _135_gradi_GPIO_Port GPIOA
+#define _135_gradi_EXTI_IRQn EXTI9_5_IRQn
+#define _180_gradi_Pin GPIO_PIN_9
+#define _180_gradi_GPIO_Port GPIOA
+#define _180_gradi_EXTI_IRQn EXTI9_5_IRQn
 
 /* USER CODE BEGIN Private defines */
 

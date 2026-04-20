@@ -41,7 +41,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-extern uint8_t miaCoda;
+extern queue_t miaCoda;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -242,14 +242,18 @@ void EXTI9_5_IRQHandler(void)
 
 /* USER CODE BEGIN 1 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	Colors color;
 	if(GPIO_Pin == Button_uno_Pin){
-
+		color = ROSSO;
+		queue_enqueue(&miaCoda, &color);
 	}
 	else if(GPIO_Pin == Button_due_Pin){
-
+		color = GIALLO;
+		queue_enqueue(&miaCoda, &color);
 	}
 	else if(GPIO_Pin == Button_tre_Pin){
-
+		color = VERDE;
+		queue_enqueue(&miaCoda, &color);
 	}
 }
 /* USER CODE END 1 */

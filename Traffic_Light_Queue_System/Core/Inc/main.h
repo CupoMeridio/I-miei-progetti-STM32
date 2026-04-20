@@ -31,12 +31,16 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "queue.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
+typedef enum {
+	ROSSO,
+	GIALLO,
+	VERDE
+}Colors;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

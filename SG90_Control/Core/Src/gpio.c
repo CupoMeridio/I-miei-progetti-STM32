@@ -32,13 +32,27 @@
 
 /* USER CODE END 1 */
 
-/** Pinout Configuration
+/** Configure pins
 */
 void MX_GPIO_Init(void)
 {
 
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pins : _0_gradi_Pin _45_gradi_Pin _90_gradi_Pin _135_gradi_Pin
+                           _180_gradi_Pin */
+  GPIO_InitStruct.Pin = _0_gradi_Pin|_45_gradi_Pin|_90_gradi_Pin|_135_gradi_Pin
+                          |_180_gradi_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 }
 

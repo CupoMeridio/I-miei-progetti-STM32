@@ -6,7 +6,7 @@ Il progetto illustra l'integrazione di **Macchine a Stati Finiti (FSM)**, code d
 ## 🎯 Funzionamento
 Il sistema simula il comportamento di un semaforo tramite l'utilizzo di 3 LED (Rosso, Giallo, Verde) e segue una logica sequenziale predefinita:
 
-* **Ciclo Automatico:** Transizione temporizzata tra gli stati (es. Rosso 30s → Giallo 5s → Verde 25s).
+* **Ciclo Automatico:** Transizione temporizzata tra gli stati (es. Rosso 5s → Giallo 2s → Verde 1s).
 * **Gestione Comandi:** Possibilità di accodare richieste di cambio stato tramite una coda FIFO.
 * **Architettura Non Bloccante:** Un timer interrupt gestisce il timing e le transizioni, mantenendo il Main Loop disponibile per la ricezione di input o altre attività di monitoraggio.
 

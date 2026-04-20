@@ -99,14 +99,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    // Posizione "Safe" Minima (1000us)
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 100);
-	HAL_Delay(1000);
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 150);
-	HAL_Delay(1000);
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 200);
-	HAL_Delay(1000);
-
   }
   /* USER CODE END 3 */
 }
@@ -152,7 +144,25 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if(GPIO_Pin == _0_gradi_Pin){
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 50);
+	}
+	if(GPIO_Pin == _45_gradi_Pin){
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 100);
+	}
+	if(GPIO_Pin == _90_gradi_Pin){
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 150);
+	}
+	if(GPIO_Pin == _135_gradi_Pin){
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 200);
+	}
+	if(GPIO_Pin == _180_gradi_Pin){
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 240);
+	}
 
+
+}
 /* USER CODE END 4 */
 
 /**

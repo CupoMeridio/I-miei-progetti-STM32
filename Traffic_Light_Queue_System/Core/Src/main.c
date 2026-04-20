@@ -22,22 +22,22 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "queue.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-typedef enum {
-	ROSSO,
-	GIALLO,
-	VERDE
-}Colors;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define QUEUE_CAPACITY 10
 #define ITEM_SIZE sizeof(Colors)
+
+#define TIMEOUT_ROSSO 5000
+#define TIMEOUT_GIALLO 2000
+#define TIMEOUT_VERDE 1000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -49,12 +49,16 @@ typedef enum {
 /* USER CODE BEGIN PV */
 queue_t miaCoda;
 uint8_t buffer_memoria[QUEUE_CAPACITY * ITEM_SIZE];
+
+Colors currentState = ROSSO;
+uint32_t lastTick = 0;
+uint32_t currentTimeout = TIMEOUT_ROSSO;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void Set_Traffic_Light(Colors color);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -93,12 +97,48 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
   queue_init(&miaCoda, buffer_memoria, ITEM_SIZE, QUEUE_CAPACITY);
+  lastTick = HAL_GetTick();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  // 1. Set LEDs
+	  Set_Traffic_Light(currentState);
+
+	  // 2. Check Queue for override
+	  Colors nextRequested;
+	  if(queue_extract(&miaCoda, &nextRequested) == QUEUE_OK){
+		  currentState = nextRequested;
+		  lastTick = HAL_GetTick();
+
+		  // Update timeout for the new state
+		  switch(currentState){
+		  	  case ROSSO: currentTimeout = TIMEOUT_ROSSO; break;
+		  	  case GIALLO: currentTimeout = TIMEOUT_GIALLO; break;
+		  	  case VERDE: currentTimeout = TIMEOUT_VERDE; break;
+		  }
+	  }
+
+	  // 3. Check Timeout for automatic transition
+	  if(HAL_GetTick() - lastTick >= currentTimeout){
+		  switch(currentState){
+		  	  case ROSSO:
+		  		  currentState = GIALLO;
+		  		  currentTimeout = TIMEOUT_GIALLO;
+		  		  break;
+		  	  case GIALLO:
+		  		  currentState = VERDE;
+		  		  currentTimeout = TIMEOUT_VERDE;
+		  		  break;
+		  	  case VERDE:
+		  		  currentState = ROSSO;
+		  		  currentTimeout = TIMEOUT_ROSSO;
+		  		  break;
+		  }
+		  lastTick = HAL_GetTick();
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -147,7 +187,23 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void Set_Traffic_Light(Colors color){
+	// Reset all LEDs
+	HAL_GPIO_WritePin(GPIOA, Led_rosso_Pin | Led_giallo_Pin | Led_verde_Pin, GPIO_PIN_RESET);
 
+	// Set requested LED
+	switch(color){
+		case ROSSO:
+			HAL_GPIO_WritePin(Led_rosso_GPIO_Port, Led_rosso_Pin, GPIO_PIN_SET);
+			break;
+		case GIALLO:
+			HAL_GPIO_WritePin(Led_giallo_GPIO_Port, Led_giallo_Pin, GPIO_PIN_SET);
+			break;
+		case VERDE:
+			HAL_GPIO_WritePin(Led_verde_GPIO_Port, Led_verde_Pin, GPIO_PIN_SET);
+			break;
+	}
+}
 /* USER CODE END 4 */
 
 /**

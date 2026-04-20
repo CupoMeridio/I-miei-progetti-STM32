@@ -13,6 +13,7 @@ Raccolta di progetti realizzati durante il corso di **Embedded System** presso l
 | 5 | LED_Queue_Control_System | Sistema interattivo con coda |
 | 6 | Traffic_Light_Queue_System | Semaforo con state machine |
 | 7 | Faiding_RGB | LED RGB con transizioni smooth |
+| 8 | SG90_Control | Controllo del servo SG90 con PWM |
 
 ## 🛠️ Hardware & Requisiti
 

@@ -14,12 +14,15 @@ Release/
 # IDE User Settings - Personal configurations (do not track)
 .vscode/
 .idea/
-.settings/
 .metadata/
 *.swp
 *.swo
 .DS_Store
 Thumbs.db
+
+# Eclipse/CubeIDE settings - Keep .prefs files (contain encoding config)
+.settings/
+!.settings/*.prefs
 
 # Backup and Temporary Files
 *.bak
