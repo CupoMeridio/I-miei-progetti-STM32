@@ -8,19 +8,24 @@ Il sistema prevede la configurazione del timer **TIM6** per la generazione di un
 
 ### Specifiche Tecniche
 - **Periferica:** TIM6 (timer di base a 16-bit).
-- **Frequenza di Interrupt:** Configurazione standard a ~1 kHz (1 interrupt ogni 1 ms).
+- **Frequenza di Interrupt:** Configurata a **2 Hz** (1 interrupt ogni **500 ms**).
 - **Architettura:** Esecuzione asincrona tramite callback.
 - **Output:** LED integrato **PA5** (LD2) per il toggling di test.
 
 ## 🔧 Analisi Tecnica
-Il timer opera come una periferica hardware indipendente che incrementa un contatore in base al clock di sistema. Al raggiungimento del valore di soglia prestabilito, viene generata un'eccezione che induce il processore a sospendere temporaneamente il task corrente per eseguire la routine di servizio associata (ISR).
+Il timer opera come una periferica hardware indipendente che incrementa un contatore in base al clock di sistema (HSI a 16 MHz). Al raggiungimento del valore di soglia prestabilito, viene generata un'eccezione che induce il processore a sospendere temporaneamente il task corrente per eseguire la routine di servizio associata (ISR).
 
-**Vantaggi dell'approccio basato su Timer:**
-- **Esecuzione Non Bloccante:** Il Main Loop rimane disponibile per l'elaborazione di altri processi.
-- **Determinismo:** Il timing è garantito dall'hardware e sincronizzato con il clock di sistema, risultando indipendente dal carico software.
-- **Efficienza:** Rappresenta il pattern standard per lo sviluppo di applicazioni real-time.
+**Calcolo della Frequenza Reale**:
+Con un clock di 16 MHz, un Prescaler di 15999 e un Periodo (ARR) di 499:
 
+$$F_{interrupt} = \frac{16.000.000}{(15999 + 1) \cdot (499 + 1)} = \frac{16.000.000}{16.000 \cdot 500} = 2\text{ Hz}$$
 
+Questa frequenza è stata scelta per permettere la verifica visiva del funzionamento tramite il LED integrato.
+
+## 🔌 Configurazione Hardware
+*   **MCU:** STM32G474RETx (NUCLEO-G474RE)
+*   **Output:** PA5 (LED integrato LD2)
+*   **Interfaccia di Debug:** ST-LINK (USB)
 
 ## 💡 Concetti Chiave
 
@@ -29,10 +34,6 @@ Il timer opera come una periferica hardware indipendente che incrementa un conta
 **Auto-Reload Register (ARR):** Definisce il valore massimo raggiungibile dal contatore prima del reset e della generazione dell'interrupt. Determina, insieme al prescaler, il periodo dell'evento.
 
 **Callback:** Funzione software invocata automaticamente dall'Hardware Abstraction Layer (HAL) al verificarsi dell'interruzione. Costituisce il punto di inserimento per la logica periodica (es. toggling di un GPIO o campionamento dati).
-
-**Calcolo della Frequenza**: La frequenza di generazione dell'interrupt è determinata dalla seguente formula:
-
-$$F_{interrupt} = \frac{Clock_{source}}{(Prescaler + 1) \cdot (Periodo + 1)}$$
 
 ## 🎓 Competenze Acquisite
 - Comprensione del funzionamento dei timer hardware.

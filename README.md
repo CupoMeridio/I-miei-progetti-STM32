@@ -9,11 +9,10 @@ Raccolta di progetti realizzati durante il corso di **Embedded System** presso l
 | 1 | Timer_Interrupt_Basic | Timer interrupt con TIM6 |
 | 2 | LED_PWM_Fade_Comparison | PWM: interrupt vs polling |
 | 3 | Timer_Multichannel_PWM | PWM su 4 canali |
-| 4 | External_Interrupt_Handler | Interrupt EXTI da GPIO |
-| 5 | LED_Queue_Control_System | Sistema interattivo con coda |
-| 6 | Traffic_Light_Queue_System | Semaforo con state machine |
-| 7 | Faiding_RGB | LED RGB con transizioni smooth |
-| 8 | SG90_Control | Controllo del servo SG90 con PWM |
+| 4 | LED_MultiTask_Hardware_Timers | Sistema interattivo con coda |
+| 5 | Traffic_Light_FSM_Polling | Semaforo con state machine |
+| 6 | Faiding_RGB | LED RGB con transizioni smooth |
+| 7 | SG90_Control | Controllo del servo SG90 con PWM |
 
 ## 🛠️ Hardware & Requisiti
 

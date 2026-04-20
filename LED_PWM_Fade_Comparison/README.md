@@ -38,5 +38,21 @@ L'aggiornamento della luminosità è gestito tramite la callback di overflow del
 
 **Determinismo:** Differenza tra temporizzazione software (soggetta a jitter e latenze del loop) e temporizzazione hardware sincronizzata con il clock di sistema.
 
+## 🔌 Schema di Collegamento
+Per osservare il confronto tra i due metodi, è necessario collegare due LED ai pin della scheda Nucleo:
+
+1.  **LED 1 (Metodo Polling):** Collegato al pin **PA5** (corrisponde al LED integrato LD2 sulla Nucleo-G474RE).  
+   * LED integrato (LD2) - Pin **PA5**
+2.  **LED 2 (Metodo Interrupt):** Collegato al pin **PA1** (tramite una resistenza di limitazione da 220-330 Ω verso GND).
+
+## 🚀 Modalità di Utilizzo
+Dopo aver compilato e caricato il progetto sulla scheda:
+
+1.  **Osservazione visiva:** Entrambi i LED eseguiranno una dissolvenza (fade) ciclica. Sebbene il risultato visivo appaia identico e sincronizzato, i LED sono gestiti da parti diverse del firmware.
+2.  **Verifica dell'architettura:**
+    *   Il **LED 1 (PA5)** dipende strettamente dal ciclo `while(1)`. Se venisse aggiunto un compito pesante o un altro `HAL_Delay()` nel loop, il fade di questo LED diventerebbe a scatti o rallenterebbe.
+    *   Il **LED 2 (PA1)** è gestito in interrupt. La sua fluidità è garantita dall'hardware del timer e non viene influenzata da ciò che accade nel `while(1)`, finché le interruzioni non vengono disabilitate.
+3.  **Test di stress:** Prova a modificare il valore di `HAL_Delay()` nel `main.c` o ad aggiungere del codice nel loop: noterai che il LED 1 cambierà comportamento, mentre il LED 2 continuerà il suo fade in modo impeccabile.
+
 ## 🎓 Conclusioni
 L'analisi evidenzia come l'approccio **Non-Blocking** sia lo standard per applicazioni embedded professionali. Mentre il risultato visivo è comparabile, solo l'architettura basata su interrupt permette la gestione simultanea e reattiva di più periferiche, requisito fondamentale per sistemi complessi.

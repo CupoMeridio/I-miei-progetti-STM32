@@ -11,7 +11,13 @@ Questo progetto utilizza il Timer 2 in modalità PWM per controllare la posizion
 - **Microcontroller**: STM32G474RET6  
 - **Frequenza clock**: 16 MHz (HSI interno)  
 - **Timer**: TIM2 in modalità PWM  
-- **Pin di output**: PA0 (TIM2_CH1)  
+- * **Pin di output (servo)**: PA0 (TIM2_CH1) – segnale PWM per il servo SG90
+* **Pulsanti di selezione angolo**: 
+  * Button 0° – Pin **PB0**
+  * Button 45° – Pin **PB1**
+  * Button 90° – Pin **PB2**
+  * Button 135° – Pin **PB3**
+  * Button 180° – Pin **PB4**  
 - **Angoli supportati**: 0°, 45°, 90°, 135°, 180°  
 
 ---

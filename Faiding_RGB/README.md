@@ -14,7 +14,10 @@ Il sistema realizza un ciclo cromatico continuo che attraversa sei fasi di trans
 * **Timer PWM:** TIM2 (Canali 1, 2, 3) per le tre componenti RGB.
 * **Timer Interrupt:** TIM6 per la temporizzazione delle transizioni.
 * **Risoluzione PWM:** 8 bit (256 livelli per canale).
-* **Uscite:** PA0 (R), PA1 (G), PB10 (B).
+* **Uscite (cablatura):**
+  * LED RGB - Anodo comune collegato a **PA0** (Componente Rosso)
+  * LED RGB - Anodo comune collegato a **PA1** (Componente Verde)
+  * LED RGB - Anodo comune collegato a **PB10** (Componente Blu)
 
 ## 🔧 Architettura del Sistema
 

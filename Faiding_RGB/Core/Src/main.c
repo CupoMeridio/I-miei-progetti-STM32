@@ -92,7 +92,7 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-  // Avvia il PWM per i 3 canali del LED (Canali 1, 2 e 4)
+  // Avvia il PWM per i 3 canali del LED (Canali 1, 2 e 3)
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);

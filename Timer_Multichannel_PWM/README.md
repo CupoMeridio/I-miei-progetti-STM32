@@ -1,46 +1,42 @@
-# Timer_Multichannel_PWM - Generazione PWM su Canali Multipli
+# Timer_Multichannel_OC - Generazione Segnali Sfasati via Output Compare
 
 ## Obiettivo
-Il progetto illustra le modalità di controllo di **molteplici dispositivi indipendenti** utilizzando le uscite PWM (Pulse Width Modulation) generate da una singola periferica timer. L'implementazione permette di gestire diverse intensità luminose su ciascun canale, mantenendo una frequenza di commutazione comune.
+Il progetto illustra come utilizzare la modalità **Output Compare (OC)** di un timer per generare segnali periodici sincronizzati ma sfasati temporalmente su più canali. A differenza del PWM, che modula la potenza, questo approccio si focalizza sulla coordinazione temporale di eventi indipendenti che condividono la stessa base dei tempi.
 
 ## 🎯 Funzionamento
-Il sistema prevede la configurazione del timer **TIM2 con 4 canali PWM** per il controllo indipendente della luminosità di 4 LED. Ciascun canale opera con un Duty Cycle specifico, permettendo di impostare livelli di intensità differenziati (es. 25%, 75%, ecc.) per ogni uscita.
+Il sistema utilizza il timer **TIM2** configurato in modalità **Toggle**. In questa configurazione, l'uscita di ciascun canale inverte il proprio stato logico ogni volta che il contatore del timer raggiunge il valore impostato nel rispettivo registro di confronto (**CCR - Capture/Compare Register**).
 
-### Specifiche Hardware
-- **Periferica:** TIM2 (configurato con 3 canali di Output Compare in modalità TOGGLE).
-- **Output:**
-  * **PA5** → TIM2_CH1 (canale 1)
-  * **PB3** → TIM2_CH2 (canale 2)
-  * **PB10** → TIM2_CH3 (canale 3)
-- **Frequenza PWM:** ~1 Hz in modalità toggle (periodo ~1 secondo).
-- **Duty Cycle (tempo ON):** Configurabile tramite registri CCR (50%, 30%, 80%).
+### Specifiche Tecniche
+- **Periferica:** TIM2 (3 canali configurati in modalità TOGGLE).
+- **Frequenza Segnale:** ~0.5 Hz (Il toggle avviene ogni secondo, completando un ciclo ON/OFF ogni 2 secondi).
+- **Duty Cycle:** Fisso al 50% per tutti i canali (caratteristica intrinseca della modalità Toggle).
 
 ## 🔧 Analisi Tecnica
-Un timer hardware opera con una frequenza di clock e un periodo (Auto-Reload Register) definiti a livello di periferica. Tuttavia, la presenza di più registri di confronto (**Capture/Compare Registers - CCRx**) consente di modulare le singole uscite in modo autonomo.
+Tutti i canali condividono lo stesso registro **ARR (Auto-Reload Register)**, fissato a 999, che determina la frequenza comune. La differenza tra i valori dei registri CCR determina lo **sfasamento temporale** (fase) tra le accensioni dei LED:
 
-Il segnale viene generato confrontando il valore del contatore principale con il valore impostato nel registro del singolo canale:
-1. Il contatore incrementa fino al valore massimo stabilito.
-2. L'uscita del canale rimane nello stato logico HIGH finché il contatore è inferiore al valore di soglia del registro CCRx.
-3. Al superamento della soglia, l'uscita passa allo stato logico LOW fino al termine del periodo.
+1.  **Canale 2 (CCR 299):** È il primo a commutare durante il conteggio.
+2.  **Canale 1 (CCR 499):** Commuta quando il contatore è circa a metà del suo percorso.
+3.  **Canale 3 (CCR 799):** È l'ultimo a commutare prima del reset del timer.
 
+Questo comportamento permette di creare sequenze temporizzate precise dove l'inizio di un evento è sfasato rispetto a un altro, pur mantenendo una sincronizzazione perfetta data dal clock comune.
 
+## 🔌 Configurazione Hardware
+*   **MCU:** STM32G474RETx (NUCLEO-G474RE)
+*   **Output (LED - cablaggio):**
+  * LED Rosso - Pin **PA4**
+  * LED Giallo - Pin **PA1**
+  * LED Verde - Pin **PA0**
+*   **Interfaccia di Debug:** ST-LINK (USB)
 
-## 💡 Applicazioni Pratiche
-* **LED RGB:** Gestione delle tre componenti cromatiche (Rosso, Verde, Blu) tramite canali indipendenti per la sintesi dei colori.
-* **Motori in corrente continua (DC):** Controllo simultaneo e indipendente della velocità di più attuatori.
-* **Sistemi di ventilazione:** Regolazione della velocità di rotazione di più ventole con profili di raffreddamento diversificati.
+## 💡 Concetti Chiave
 
-## 🎓 Concetti Chiave
+**Output Compare Toggle:** Una modalità operativa in cui l'hardware inverte automaticamente lo stato del pin al match del contatore. Elimina la necessità di gestire il toggle via software (interrupt), riducendo il carico della CPU.
 
-**Frequenza Comune:** Poiché i canali condividono la medesima base dei tempi del timer, la frequenza del segnale PWM è identica per tutte le uscite associate a quella specifica periferica.
+**Sfasamento (Phase Shift):** La sfasatura temporale tra due segnali periodici. In questo progetto, lo sfasamento è ottenuto impostando livelli di soglia (CCR) differenti su canali che condividono lo stesso periodo.
 
-**Duty Cycle Indipendente:** È possibile variare la frazione di tempo "ON" di ciascun canale senza interferire con lo stato degli altri.
-
-**Modifica a Runtime:** Il Duty Cycle può essere aggiornato dinamicamente durante l'esecuzione del firmware. Questa caratteristica consente al sistema di reagire istantaneamente a input esterni (es. variazioni rilevate da sensori di luminosità o temperatura).
-
+**Sincronizzazione Hardware:** Poiché tutti i segnali dipendono dallo stesso contatore, non esiste "drift" (deriva temporale) tra i canali; la loro relazione temporale rimane costante nel tempo.
 
 ## 🎓 Competenze Acquisite
-- Configurazione e gestione di periferiche timer multicanale.
-- Comprensione dei vantaggi del controllo PWM rispetto alla regolazione di tensione lineare (efficienza energetica e precisione).
-- Implementazione di logiche di controllo asincrone per attuatori multipli.
-- Gestione dei registri di configurazione in tempo reale.
+- Configurazione di timer in modalità Output Compare.
+- Comprensione della differenza tra modulazione PWM e commutazione di fase OC.
+- Gestione di segnali multicanale sincronizzati per l'automazione di sequenze temporali.
