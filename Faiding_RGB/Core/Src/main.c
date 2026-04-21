@@ -158,22 +158,22 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if (htim->Instance == TIM6)
   {
     switch (fase) {
-      case 0: // Da Rosso a Giallo (Aumenta Verde)
+      case 0: // Da rosso a giallo (Aumenta verde)
         if (++g == 255) fase = 1;
         break;
-      case 1: // Da Giallo a Verde (Diminuisci Rosso)
+      case 1: // Da giallo a verde (Diminuisce rosso)
         if (--r == 0)   fase = 2;
         break;
-      case 2: // Da Verde a Ciano (Aumenta Blu)
+      case 2: // Da verde a ciano (Aumenta blu)
         if (++b == 255) fase = 3;
         break;
-      case 3: // Da Ciano a Blu (Diminuisci Verde)
+      case 3: // Da ciano a blu (Diminuisce verde)
         if (--g == 0)   fase = 4;
         break;
-      case 4: // Da Blu a Magenta (Aumenta Rosso)
+      case 4: // Da blu a Magenta (Aumenta rosso)
         if (++r == 255) fase = 5;
         break;
-      case 5: // Da Magenta a Rosso (Diminuisci Blu)
+      case 5: // Da magenta a rosso (Diminuisce blu)
         if (--b == 0)   fase = 0;
         break;
     }
